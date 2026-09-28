@@ -38,6 +38,70 @@ public class NQueens {
                    
     }
 
+    // Approach 1 - Backtracking using a board and diagonal checks
+    public static List<List<String>> solveNQueensApproach_1(int n) {
+        List<List<String>> sol = new ArrayList<>();
+        char[][] board = new char[n][n];
+        for (char[] row : board) {
+            Arrays.fill(row, '.');
+        }
+        solver(board, sol, 0, n);
+        return sol;
+    }
+
+    public static void solver(char[][] board, List<List<String>> sol, int col, int n) {
+        if (col == n) {
+            sol.add(construct(board, n));
+            return;
+        }
+
+        for (int row = 0; row < n; row++) {
+            if (isSafe(board, col, row, n)) {
+                board[row][col] = 'Q';
+                solver(board, sol, col + 1, n);
+                board[row][col] = '.';
+            }
+        }
+    }
+
+    public static boolean isSafe(char[][] board, int col, int row, int n) {
+        int i = row;
+        int j = col;
+        while (i >= 0 && j >= 0) {
+            if (board[i][j] == 'Q') return false;
+            i--;
+            j--;
+        }
+
+        i = row;
+        j = col;
+        while (j >= 0) {
+            if (board[i][j] == 'Q') return false;
+            j--;
+        }
+
+        i = row;
+        j = col;
+        while (i < n && j >= 0) {
+            if (board[i][j] == 'Q') return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    public static List<String> construct(char[][] board, int n) {
+        List<String> temp = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < n; j++) {
+                sb.append(board[i][j]);
+            }
+            temp.add(sb.toString());
+        }
+        return temp;
+    }
+
     //Approach 1
     public static void setQueensApproach_1(int col , char[][] arr, List<List<String>> sol)
     {
