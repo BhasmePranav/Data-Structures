@@ -81,21 +81,7 @@ This follows the preorder order:
 ## 3) Postorder Traversal of Binary Tree: Iterative Approach (Using 2 Stacks)
 
 ```java
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
+
 class Solution {
     public List<Integer> postorderTraversal(TreeNode root) {
         List<Integer> l = new ArrayList<>();
@@ -133,3 +119,51 @@ This follows the postorder order:
 ### Complexity
 - Time: `O(n)`
 - Space: `O(n)`
+
+---
+
+## 4) Postorder Traversal of Binary Tree: Iterative Approach (Using Single Stack)
+
+```java
+
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> sol = new ArrayList<>();
+        Stack<TreeNode> st = new Stack<>();
+
+        while (root != null || !st.isEmpty()) {
+            if (root != null) {
+                st.push(root);
+                root = root.left;
+            } else {
+                TreeNode temp = st.peek().right;
+                if (temp == null) {
+                    temp = st.pop();
+                    sol.add(temp.val);
+                    while (!st.isEmpty() && temp == st.peek().right) {
+                        temp = st.pop();
+                        sol.add(temp.val);
+                    }
+                } else {
+                    root = temp;
+                }
+            }
+        }
+        return sol;
+    }
+}
+```
+
+### How it works
+- Traverse to the leftmost node while pushing nodes into the stack.
+- When the left side is exhausted, look at the right child of the top stack node.
+- If the right child is null, pop the node and add it to the result.
+- Continue popping ancestors while the popped node is the right child of the stack top.
+- If the right child exists, move to that right subtree.
+
+This follows the postorder order:
+- left subtree → right subtree → node
+
+### Complexity
+- Time: `O(n)`
+- Space: `O(h)` where `h` is the height of the tree
