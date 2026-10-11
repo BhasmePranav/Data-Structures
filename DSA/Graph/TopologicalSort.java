@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+// Topological Sort: if an edge is u -> v, then u should be before v.
 public class TopologicalSort {
     
     public static void main(String[] args) {
